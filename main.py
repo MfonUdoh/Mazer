@@ -1,6 +1,6 @@
 import os
 
-
+#refactor classes, seperate files
 class game(object):
     
     def __init__(self):
@@ -10,7 +10,7 @@ class game(object):
 
     def set_level(self,level):
       """Assigns the location of all the walls and starting player position for the selected level"""
-      
+      #Level data should be read from a seperate file
       levels = {
         1 : [
           [0,4], [0,7], [2,2], [3,0], [3,6], [4,0], [4,3], [4,2], [4,4], [4,5], [4,6], [4,9], [5,4], [8,7], [9,5],[9,6], [9,7]
@@ -56,10 +56,10 @@ class game(object):
         """Displays the game board"""
         os.system('clear')
         print ("LEVEL " + str(lvl))
-        print("Empty Spaces Remaining: " + str((game.size ** 2) - walls.count - marks.count))
+        print("Empty Spaces Remaining: " + str((game.size ** 2) - walls.count - marks.count)) #'game' should be 'self', also should make a class variable 'empties'
         print("Turns Taken: " + str(player.turns))
         
-        hline = "".join(['_']*(game.size * 6 + 1))
+        hline = "".join(['_']*(game.size * 6 + 1)) #'self' here too
         locs = []
         for row in range(self.size):
             y = row
@@ -104,7 +104,7 @@ class player(object):
         edge = 0
         
         for wall in walls:
-            #I think I can simply the logic here
+            #I think I can simplify the logic here
             if direction == 'd':
                 edge = (game.size - 1) - self.position_x
                 if wall[1] == self.position_y and (wall[0] - self.position_x) > 0:
@@ -154,7 +154,7 @@ class player(object):
             self.position_y += moves[direction][1]
             xpos2 = self.position_x
             ypos2 = self.position_y
-            self.turns += 1
+            self.turns += 1 # Change this so move is only counted if the players position actually changes x/ypos2 - x/ypos1 != 0
         marks.make(xpos1, xpos2, ypos1, ypos2)
 
 
@@ -194,7 +194,7 @@ class marks(object):
                 if [xpos1, ypos2 + displace] not in self.locations:
                     self.locations.append([xpos1, ypos2 + displace])
         self.count = len(self.locations)
-
+#this should be import game, player, walls, marks (and possibly levels)
 game = game()
 player = player()
 walls = walls()
@@ -205,11 +205,11 @@ print("Hello player, you are playing as a photon in a lazer beam, meaning you ca
 print("You must light every empty space in the maze to win, use 'w''a''s''d' keys to choose your direction of travel, up, left, down, right and press enter to move.")
 print("Hit enter to continue.")
 input()
-lvl = 0
+lvl = 0 # Sets start level (change for testing a specific level)
 scores = []
-while lvl <= 4:
+while lvl <= 4: #remove '4' make this check how many levels there are
     game.set_level(lvl)
-    while (game.size ** 2) - walls.count - marks.count != 0:
+    while (game.size ** 2) - walls.count - marks.count != 0: # change for empties
             game.print_board(player.position_x, player.position_y)
             player.move(input())
 
@@ -217,7 +217,7 @@ while lvl <= 4:
     if player.turns > 100 + game.minmoves:
       player.turns = 100 + game.minmoves
     print("Congrats you completed the maze!!!")
-    score = 100-(player.turns-game.minmoves)
+    score = 100-(player.turns-game.minmoves) # should be in player class
     scores.append(score)
     print("Your score " + str(score))
     print(".... Next Level?")
@@ -226,4 +226,4 @@ while lvl <= 4:
 os.system('clear')
 totalscore = sum(scores)
 print("Congratulations looks like you have illuminated all of the mazes!!!")
-print("Your total score is: " + str(totalscore) + " out of 500")
+print("Your total score is: " + str(totalscore) + " out of 500") # change to vary based on number of levels
