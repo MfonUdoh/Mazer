@@ -9,4 +9,4 @@ Simply fork the repo,
 add new entries to the set_level method in the game class,
 the dictionaries in this method store the co-ordinates of both the obstacles positions and the player's start position and also the estimated minimum number of moves (to generate a score for the user) it takes to beat the level, also remember to change line 210 to match the total number of levels you have if you've added more.
 
-My main reason for creating the game was to try to learn more about object-oriented structure. The functions are seperated into seperate class methods, to finish off I need to break the code up into different files.
+My main reason for creating the game was to try to learn more about object-oriented structure. The key objects of the program are seperated into classes and the classes are stored in individual .py files since refactor.
