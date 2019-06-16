@@ -9,7 +9,7 @@ marksi = marks()
 pygame.init()
 myfont = pygame.font.SysFont(None,10)
 playeri = player()
-
+game.lvl = 4
 screen_width = 600
 screen_height = 600
 multiple = 50
@@ -20,15 +20,15 @@ radius = int(0.25 * multiple)
 wallwidth = int(0.50 * multiple)
 markradius = int(0.05 * multiple)
 
-x = multiple * (levels.playerpos[0][0] + 1) + radius
-y = multiple * (levels.playerpos[0][1] + 1) + radius
+x = multiple * (levels.playerpos[game.lvl][0] + 1) + radius
+y = multiple * (levels.playerpos[game.lvl][1] + 1) + radius
+
+playeri.position_x = levels.playerpos[game.lvl][0]
+playeri.position_y = levels.playerpos[game.lvl][1]
 run = True
 
-playeri.position_x = levels.playerpos[0][0]
-playeri.position_y = levels.playerpos[0][1]
-
 while run:
-
+    
     x1 = playeri.position_x
     x2 = playeri.position_x
     y1 = playeri.position_y
@@ -39,9 +39,20 @@ while run:
     pygame.time.delay(100)
     game.empties = (game.size ** 2) - walls.count - marksi.count
     keys = pygame.key.get_pressed()
+
     if game.empties == 0:
         # myfont.Font.render('Next Level', 1, (255, 100, 100))
-        run = False
+        if game.lvl == game.maxlevels:
+            run = False
+        else:
+            game.lvl += 1
+            playeri.position_x = levels.playerpos[game.lvl][0]
+            playeri.position_y = levels.playerpos[game.lvl][1]
+            x = multiple * (levels.playerpos[game.lvl][0] + 1) + radius
+            y = multiple * (levels.playerpos[game.lvl][1] + 1) + radius
+            marksi.locations = []
+            marksi.count = 0
+
     else:
         if keys[pygame.K_LEFT]:
             skip = playeri.distance_to_edge('a', levels.levels[game.lvl]) * multiple
@@ -78,9 +89,10 @@ while run:
         pygame.draw.circle(screen, (255, 255, 0), (x, y), radius, )
         for wall in levels.levels[game.lvl]:
             pygame.draw.rect(screen, (255, 255, 255), (int(multiple * (1 + wall[0])), int(multiple * (1 + wall[1])), wallwidth, wallwidth))
+    
     for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
+        if event.type == pygame.QUIT:
+            run = False
 
     pygame.display.update()
 

@@ -10,7 +10,7 @@ class game(object):
       self.minmoves = 0
       self.lvl = 0
       self.empties = 0
-      self.maxlevels = len(levels.levels)
+      self.maxlevels = len(levels.levels) - 1
 
     def set_level(self,level):
       """Assigns the location of all the walls and starting player position for the selected level"""
