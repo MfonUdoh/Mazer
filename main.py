@@ -7,9 +7,8 @@ from walls import *
 walls = walls()
 marksi = marks()
 pygame.init()
-myfont = pygame.font.SysFont(None,10)
 playeri = player()
-game.lvl = 4
+# game.lvl = 4
 screen_width = 600
 screen_height = 600
 multiple = 50
