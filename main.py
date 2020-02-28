@@ -35,7 +35,7 @@ while run:
 
     walls.locations = levels.levels[game.lvl]
     walls.count = len(walls.locations)
-    pygame.time.delay(100)
+    pygame.time.delay(10)
     game.empties = (game.size ** 2) - walls.count - marksi.count
     keys = pygame.key.get_pressed()
 
@@ -51,29 +51,27 @@ while run:
             y = multiple * (levels.playerpos[game.lvl][1] + 1) + radius
             marksi.locations = []
             marksi.count = 0
+            pygame.time.delay(10)
 
     else:
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT or pygame.K_a]:
             skip = playeri.distance_to_edge('a', levels.levels[game.lvl]) * multiple
             if x - radius - skip >= 0:
                 x -= skip
-        if keys[pygame.K_RIGHT]:
+        elif keys[pygame.K_RIGHT or pygame.K_d]:
             skip = playeri.distance_to_edge('d', levels.levels[game.lvl]) * multiple
             if x + radius + skip <= screen_width:
                 x += skip
-        if keys[pygame.K_UP]:
+        elif keys[pygame.K_UP or pygame.K_w]:
             skip = playeri.distance_to_edge('w', levels.levels[game.lvl]) * multiple
             if y - radius - skip >= 0:
                 y -= skip
-        if keys[pygame.K_DOWN]:
+        elif keys[pygame.K_DOWN or pygame.K_s]:
             skip = playeri.distance_to_edge('s', levels.levels[game.lvl]) * multiple
             if y + radius + skip <= screen_height:
                 y += skip
 
-        # print ("LEVEL " + str(game.lvl))
-        # print("Empty Spaces Remaining: " + str(game.empties) )
-        # print("Turns Taken: " + str(turns))
-        
+        playeri.turns += 1
         playeri.position_x = int(((x - radius) / multiple) - 1)
         playeri.position_y = int(((y - radius) / multiple) - 1)
         
@@ -83,6 +81,11 @@ while run:
         marksi.make(x1, x2, y1, y2)
         
         screen.fill((0, 0, 0))
+
+        font = pygame.font.SysFont(None, 20)
+        textSurface = font.render("LEVEL: {}    TURNS: {}    EMPTY SPACES: {}".format(game.lvl, playeri.turns, game.empties), True, [255, 255, 255], [0, 0, 0])
+        screen.blit(textSurface, (int(0.2 * multiple), int(0.3 * multiple)))
+
         for mark in marksi.locations:
             pygame.draw.circle(screen, (255, 255, 255), (int(multiple * (1.25 + mark[0])), int(multiple * (1.25 + mark[1]))), markradius)
         pygame.draw.circle(screen, (255, 255, 0), (x, y), radius, )
