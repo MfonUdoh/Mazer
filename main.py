@@ -1,23 +1,40 @@
-import os, levels, walls, game
-from game import Game
+import levels, pygame, game
 from player import *
 from pygame.locals import *
-from marks import *
 
-marksi = marks()
-playeri = player()
-game = Game()
-
+game = game.Game()
 # x = multiple * (levels.playerpos[game.lvl][0] + 1) + radius
 # y = multiple * (levels.playerpos[game.lvl][1] + 1) + radius
 
 running = True
 
 while running:
-    playeri.position_x, playeri.position_y = game.set_level(levels.levels)
-    marksi.locations = []
-    marksi.count = 0
-    game.render_board(playeri.position_x, playeri.position_x, marksi.locations, walls, playeri.turns)
+    game.set_level(levels)
+    game.empties = (game.size ** 2) - len(game.wallsLocations) - len(game.marksLocations)
+    pygame.init()
+    screen_width = 600
+    screen_height = 600
+    multiple = 50
+    screen = pygame.display.set_mode((screen_width, screen_height))
+    pygame.display.set_caption("Mazer")
+
+    radius = int(0.25 * multiple)
+    wallwidth = int(0.50 * multiple)
+    markradius = int(0.05 * multiple)
+
+    screen.fill((0, 0, 0))
+
+    font = pygame.font.SysFont(None, 20)
+    textSurface = font.render("LEVEL: {}    TURNS: {}    EMPTY SPACES: {}".format(self.lvl, playeri.turns, self.empties), True, [255, 255, 255], [0, 0, 0])
+    screen.blit(textSurface, (int(0.2 * multiple), int(0.3 * multiple)))
+
+    for mark in marks.locations:
+        pygame.draw.circle(screen, (255, 255, 255), (int(multiple * (1.25 + mark[0])), int(multiple * (1.25 + mark[1]))), markradius)
+    pygame.draw.circle(screen, (255, 255, 0), (x, y), radius, )
+    for wall in levels.levels[game.lvl]:
+        pygame.draw.rect(screen, (255, 255, 255), (int(multiple * (1 + wall[0])), int(multiple * (1 + wall[1])), wallwidth, wallwidth))
+    
+    pygame.display.update()
 
     while playing:
 
