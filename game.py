@@ -1,8 +1,7 @@
-import os, walls, levels
-from marks import *
-marks = marks()
+import pygame, levels, walls, marks, player
+from pygame.locals import *
 
-class game(object):
+class Game(object):
     
     def __init__(self):
       #Board width
@@ -11,54 +10,40 @@ class game(object):
       self.lvl = 0
       self.empties = 0
       self.maxlevels = len(levels.levels) - 1
+      
 
-    def set_level(self,level):
+    def set_level(self, levels):
       """Assigns the location of all the walls and starting player position for the selected level"""
       #Level data should be read from a seperate file
       self.minmoves = levels.minmoves[level]
       walls.locations = levels.levels[level]
       playx = levels.playerpos[level][0]
       playy = levels.playerpos[level][1]
-      walls.count = len(walls.locations)
-      marks.locations = []
-      marks.count = 0
-      turns = 0
-      return playx, playy, turns
+      return playx, playy
 
-    def print_board(self, turns, xpos1, xpos2, ypos1, ypos2):
-        """Displays the game board"""
-        os.system('clear')
-        marks.make(xpos1, xpos2, ypos1, ypos2)
+    def render_board(self, x, y, marks, walls, turns):
         self.empties = (self.size ** 2) - walls.count - marks.count
-        print ("LEVEL " + str(self.lvl))
-        print("Empty Spaces Remaining: " + str(self.empties) )
-        print("Turns Taken: " + str(turns))
-        hline = "".join(['_']*(self.size * 6 + 1))
-        locs = []
-        for row in range(self.size):
-            y = row
-            addition = []
-            for col in range((self.size + 1)*2):
-                #for each row if statements decide which element to fill a space with or leave it blank
-                x = int(col / 2 - 0.5)
-                cord = [x,y]
-                if col % 2 == 0:
-                    if col == 0 or x == self.size - 1:
-                        addition.append("|")
-                    else:
-                        addition.append(" ")
-                elif xpos2 == x and ypos2 == y:
-                    addition.append("O")
-                elif cord in marks.locations:
-                    addition.append(".")
-                elif cord in walls.locations:
-                    addition.append("X")
-                else:
-                    addition.append(" ")
-            locs.append(addition)
+        pygame.init()
+        screen_width = 600
+        screen_height = 600
+        multiple = 50
+        screen = pygame.display.set_mode((screen_width, screen_height))
+        pygame.display.set_caption("Mazer")
+
+        radius = int(0.25 * multiple)
+        wallwidth = int(0.50 * multiple)
+        markradius = int(0.05 * multiple)
+
+        screen.fill((0, 0, 0))
+
+        font = pygame.font.SysFont(None, 20)
+        textSurface = font.render("LEVEL: {}    TURNS: {}    EMPTY SPACES: {}".format(self.lvl, playeri.turns, self.empties), True, [255, 255, 255], [0, 0, 0])
+        screen.blit(textSurface, (int(0.2 * multiple), int(0.3 * multiple)))
+
+        for mark in marks.locations:
+            pygame.draw.circle(screen, (255, 255, 255), (int(multiple * (1.25 + mark[0])), int(multiple * (1.25 + mark[1]))), markradius)
+        pygame.draw.circle(screen, (255, 255, 0), (x, y), radius, )
+        for wall in levels.levels[game.lvl]:
+            pygame.draw.rect(screen, (255, 255, 255), (int(multiple * (1 + wall[0])), int(multiple * (1 + wall[1])), wallwidth, wallwidth))
         
-        print(hline)
-        for row in range(self.size):
-            print()
-            print("  ".join(locs[row]))
-        print(hline)
+        pygame.display.update()

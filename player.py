@@ -1,6 +1,3 @@
-from game import *
-game = game()
-
 class player(object):
     
     def __init__(self):
@@ -70,29 +67,29 @@ class player(object):
         
         return self.turns, self.position_x, self.next_position_x, self.position_y, self.next_position_y
 
-    def run_game(self):
-        scores = []
-        while game.lvl <= game.maxlevels - 1: #remove '4' make this check how many levels there are
-            self.position_x, self.position_y, self.turns = game.set_level(game.lvl)
-            self.next_position_x = self.position_x
-            self.next_position_y = self.position_y
-            game.print_board(self.turns, self.position_x, self.next_position_x, self.position_y, self.next_position_y)
-            self.move(input())
-            while True: # change for empties
-                game.print_board(self.turns, self.position_x, self.next_position_x, self.position_y, self.next_position_y)
-                if game.empties == 0:
-                    break
-                else:
-                    self.move(input())
+    # def run_game(self):
+    #     scores = []
+    #     while game.lvl <= game.maxlevels - 1: #remove '4' make this check how many levels there are
+    #         self.position_x, self.position_y, self.turns = game.set_level(game.lvl)
+    #         self.next_position_x = self.position_x
+    #         self.next_position_y = self.position_y
+    #         game.print_board(self.turns, self.position_x, self.next_position_x, self.position_y, self.next_position_y)
+    #         self.move(input())
+    #         while True: # change for empties
+    #             game.print_board(self.turns, self.position_x, self.next_position_x, self.position_y, self.next_position_y)
+    #             if game.empties == 0:
+    #                 break
+    #             else:
+    #                 self.move(input())
 
-            game.print_board(self.turns, self.position_x, self.next_position_x, self.position_y, self.next_position_y)
-            if self.turns > 100 + game.minmoves:
-                self.turns = 100 + game.minmoves
-            print("Congrats you completed the maze!!!")
-            score = 100-(self.turns-game.minmoves) # should be in self class
-            scores.append(score)
-            print("Your score " + str(score))
-            print(".... Next Level?")
-            input()
-            game.lvl += 1
-        return scores
+    #         game.print_board(self.turns, self.position_x, self.next_position_x, self.position_y, self.next_position_y)
+    #         if self.turns > 100 + game.minmoves:
+    #             self.turns = 100 + game.minmoves
+    #         print("Congrats you completed the maze!!!")
+    #         score = 100-(self.turns-game.minmoves) # should be in self class
+    #         scores.append(score)
+    #         print("Your score " + str(score))
+    #         print(".... Next Level?")
+    #         input()
+    #         game.lvl += 1
+        # return scores
