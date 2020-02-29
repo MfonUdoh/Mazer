@@ -20,6 +20,7 @@ class Game(object):
         self.minmoves = level.minMoves[self.level]
         self.wallsLocations = level.wallsLocations[self.level]
         self.marksLocations = []
+        self.turns = 0
         self.maxLevels = len(level.minMoves) - 1
         self.x1 = level.playerPosition[self.level][0]
         self.x2 = level.playerPosition[self.level][0]
